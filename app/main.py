@@ -5,6 +5,10 @@ from fastapi.staticfiles import StaticFiles
 from app.config import settings
 from app.routers import auth, comments, posts, tags, uploads
 
+import os
+
+os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
+
 app = FastAPI(
     title="inkwell-api",
     description="Blog REST API — project 3 of a 15-project backend series.",
