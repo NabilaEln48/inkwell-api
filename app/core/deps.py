@@ -7,10 +7,11 @@ from app.database import get_db
 from app.models.user import User
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+optional_oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False)
 
 
 def get_current_user(
-token: <redacted> = Depends(oauth2_scheme),
+token: str = Depends(oauth2_scheme),
     db: Session = Depends(get_db),
 ) -> User:
     credentials_exception = HTTPException(
@@ -28,7 +29,7 @@ token: <redacted> = Depends(oauth2_scheme),
 
 
 def get_optional_user(
-token: <redacted> | None = Depends(OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False)),
+token: str | None = Depends(optional_oauth2_scheme),
     db: Session = Depends(get_db),
 ) -> User | None:
     if token is None:
